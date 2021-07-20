@@ -1,0 +1,18 @@
+{% extends "wagtailusers/users/edit.html" %}
+
+{% block extra_fields %}
+
+    {% include "wagtailadmin/shared/field_as_li.html" with field=form.zone %}
+    {% include "wagtailadmin/shared/field_as_li.html" with field=form.state %}
+    {% include "wagtailadmin/shared/field_as_li.html" with field=form.region %}
+    {% include "wagtailadmin/shared/field_as_li.html" with field=form.divison %}
+    {% include "wagtailadmin/shared/field_as_li.html" with field=form.district %}
+    {% include "wagtailadmin/shared/field_as_li.html" with field=form.mandal %}
+    {% include "wagtailadmin/shared/field_as_li.html" with field=form.village %}
+    {% include "wagtailadmin/shared/field_as_li.html" with field=form.company %}
+    {% include "wagtailadmin/shared/field_as_li.html" with field=form.address %}
+    {% include "wagtailadmin/shared/field_as_li.html" with field=form.usertype %}
+    {% include "wagtailadmin/shared/field_as_li.html" with field=form.officer %}
+    {% include "wagtailadmin/shared/field_as_li.html" with field=form.mobile %}
+
+{% endblock extra_fields %}
