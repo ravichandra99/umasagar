@@ -35,9 +35,12 @@ class SelectSupplierView(LoginRequiredMixin,View):
 
     def post(self, request, *args, **kwargs):                                   # gets selected supplier and redirects to 'PurchaseCreateView' class
         form = self.form_class(request.POST)
+        print(form)
+        print(request.POST)
         if form.is_valid():
             supplierid = request.POST.get("dealer")
-            supplier = get_object_or_404(MyUser, id=supplierid)
+            supplier = get_object_or_404(MyUser, username=supplierid)
+            print(supplier.pk)
             return redirect('umasagar:new-purchase', supplier.pk)
         return render(request, self.template_name, {'form': form})
 
@@ -71,7 +74,8 @@ class PurchaseCreateView(LoginRequiredMixin,View):
             # create bill details object
             billdetailsobj = SaleBillDetails(billno=billobj)
             billdetailsobj.save()
-            for form in formset:                                                # for loop to save each individual form as its own object
+            for form in formset:                                  # for loop to save each individual form as its own object
+                print(form)
                 # false saves the item and links bill to the item
 
                 billitem = form.save(commit=False)
@@ -81,8 +85,12 @@ class PurchaseCreateView(LoginRequiredMixin,View):
                 billitem.totalprice = billitem.perprice * billitem.quantity
                    
                 # saves bill item
-                
-                billitem.save()
+                try:
+                    billitem.save()
+                except:
+                    messages.info(request, 'Select any Product')
+                    return redirect('umasagar:sales-list')
+
                 if settings.USE_EMAIL:
                     #current_site = get_current_site(request)
                     send_mail(

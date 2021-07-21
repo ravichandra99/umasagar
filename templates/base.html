@@ -6,7 +6,7 @@
 
 	<title>{% block title %} {% endblock %}</title>
 	
-    {% block css %}
+    
 	<!-- CSS only -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
     <!-- JavaScript Bundle with Popper -->
@@ -16,6 +16,8 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/sidebar.css' %}">    
     <link rel="stylesheet" type="text/css" href="{% static 'css/dialogbox.css' %}">
 
+    {% block extrahead %}
+
     {% endblock %}
 
 
@@ -24,7 +26,7 @@
 <body>
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">UMASAGAR</a>
+    <a class="navbar-brand" href="#">JUST TEST</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -63,7 +65,7 @@
   {% if messages %}
 <ul class="messages">
     {% for message in messages %}
-    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}><b style="color: green">{{ message }}</b></li>
+    <li {% if message.tags %} class="{{ message.tags }}"{% endif %}><b style="color: green">{{ message }}</b></li>
     {% endfor %}
 </ul>
 {% endif %}

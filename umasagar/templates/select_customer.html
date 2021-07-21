@@ -21,13 +21,30 @@
     <form method="post">
 
         {% csrf_token %}
+
+
+        <input type="text" list="userlist" placeholder="Select User" class="form-select" style="width: 300px;" name="dealer" id="id_dealer" autocomplete="off">
+
+    
+
+        <datalist id="userlist">
+
+        {% for i,j in form.dealer.field.choices %}
+
+        <option value="{{i}}">{{j}}</option>
+
+        {% endfor %}
+
+        </datalist>
+
         
-        {% for field in form.visible_fields %}
+        
+        <!-- {% for field in form.visible_fields %}
             <div class="form-group">
                 {{ field.label_tag }}
                 {{ field }}
             </div>
-        {% endfor %}
+        {% endfor %} -->
 
         <br>
         <div class="align-middle">

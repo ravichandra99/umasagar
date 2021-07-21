@@ -33,7 +33,7 @@ class Stage(models.Model):
 		return self.stage
 
 class VarietyCode(models.Model):
-	variety_code = models.CharField(max_length = 100)
+	variety_code = models.CharField(max_length = 100,unique = True,primary_key = True)
 
 	def __str__(self):
 		return self.variety_code
@@ -50,7 +50,7 @@ class Product(models.Model):
 	crop_code = models.ForeignKey(CropCode, on_delete = models.CASCADE)
 	crop_category = models.ForeignKey(CropCategory, on_delete = models.CASCADE)
 	stage = models.ForeignKey(Stage, on_delete = models.CASCADE)
-	variety_code = models.ForeignKey(VarietyCode, on_delete = models.CASCADE)
+	variety_code = models.OneToOneField(VarietyCode, on_delete = models.CASCADE,primary_key = True)
 	uom = models.ForeignKey(UOM, on_delete = models.CASCADE)
 	pack_size = models.CharField(max_length = 100)
 	price = models.DecimalField(max_digits = 15,decimal_places = 2)
@@ -68,6 +68,8 @@ class SaleBill(models.Model):
     phone = models.CharField(max_length=13,blank = True,null = True)
     address = models.CharField(max_length=200,blank = True,null = True)
     email = models.EmailField(max_length=254,blank = True,null = True)
+    lrno = models.CharField(max_length = 254,blank = True,null = True,verbose_name = 'LR No.')
+    vehicleno = models.CharField(max_length = 254,blank = True,null = True,verbose_name = 'Vehicle No.')
     #gstin = models.CharField(max_length=15)
     s1approve = models.BooleanField(default = False,verbose_name = 'Approve')
     s2approve = models.BooleanField(default = False,verbose_name = 'Approve')
