@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect, get_object_or_404, reverse
-from django.http import HttpResponse
+from django.http import HttpResponse,JsonResponse
 from django.views.generic import (
     View, 
     ListView,
@@ -8,7 +8,7 @@ from django.views.generic import (
     DeleteView
 )
 
-from umasagar.models import Product,SaleBillDetails,SaleBill
+from umasagar.models import Product,SaleBillDetails,SaleBill,SaleItem
 from authentication.models import MyUser
 from umasagar.forms import SaleItemFormset,SelectDealerForm,SaleForm,\
 Boss1ApproveForm,Boss2ApproveForm,LogApproveForm
@@ -17,6 +17,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.sites.shortcuts import get_current_site
+from datetime import datetime
 
 # Create your views here.
 def index(request):
@@ -62,7 +63,7 @@ class PurchaseCreateView(LoginRequiredMixin,View):
         formset = SaleItemFormset(request.POST)                             # recieves a post method for the formset
         supplierobj = get_object_or_404(MyUser, pk=pk)
         #                       # gets the supplier object
-        data = {'name':supplierobj.username,'phone':supplierobj.mobile,'email':supplierobj.email}
+        data = {'name':supplierobj.username,'phone':supplierobj.mobile,'email':supplierobj.email }
         form = SaleForm(data)
         
             
@@ -181,10 +182,30 @@ class LogApproveView(LoginRequiredMixin,View):
         form = self.form_class(request.POST)
         if form.is_valid():
             approve = request.POST.get("logapprove")
+            lrno = request.POST.get("lrno")
+            vehicleno = request.POST.get("vehicleno")
             result = True if approve == 'on' else False
             salebill = get_object_or_404(SaleBill, pk = kwargs['pk'])
+            salebill.lrno = lrno
+            salebill.vehicleno = vehicleno
             salebill.logapprove = result
+            salebill
+
             salebill.save()
+
+            itembill = SaleItem.objects.filter(billno=salebill.billno)
+
+            billdetails = SaleBillDetails.objects.get(billno=salebill.billno)
+
+            total_amount = [round(i.totalprice ,2) for i in itembill]
+            total = round(sum(total_amount),2)
+
+            billdetails.total = total
+            billdetails.igst = datetime.today()
+            billdetails.veh = salebill.vehicleno
+            billdetails.po = salebill.lrno
+            billdetails.tcs = True
+            billdetails.save()
 #             if settings.USE_EMAIL and result:
 #                     #current_site = get_current_site(request)
 #                     send_mail(
@@ -216,7 +237,40 @@ class SaleView(LoginRequiredMixin,ListView):
         if self.request.user.usertype.usertype == 'user':
             print(self.request.user)
             context = {'bills': SaleBill.objects.filter(dealer = self.request.user)}
+        elif self.request.user.usertype.usertype == 'logistics':
+            print(self.request.user)
+            context = {'bills': SaleBill.objects.all(),'bill':SaleBillDetails.objects.all()}
+
         return context
+
+def getprice(request):
+
+    if request.is_ajax():
+        product = request.GET.get('product')
+        p = Product.objects.get(variety_code_id = product)
+        price = p.price
+        result = {'price':price}
+
+    return JsonResponse(result)
+
+
+# used to display the sale bill object
+class SaleBillView(View):
+    
+    template_name = "sale_bill.html"
+
+    
+    def get(self, request, billno):
+        bill = SaleBill.objects.get(billno=billno)
+        items = SaleItem.objects.filter(billno=billno)
+        billdetails = SaleBillDetails.objects.get(billno=billno)
+
+        context = {
+            'bill'          : bill,
+            'items'         : items,
+            'billdetails'   : billdetails,
+        }
+        return render(request, self.template_name, context)
 
 
 

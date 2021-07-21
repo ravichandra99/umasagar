@@ -66,7 +66,7 @@ class SaleBill(models.Model):
     dealer = models.ForeignKey(MyUser, on_delete = models.SET_NULL, related_name='saledealer',null = True,verbose_name = 'select user')
     name = models.CharField(max_length=150,blank = True,null = True)
     phone = models.CharField(max_length=13,blank = True,null = True)
-    address = models.CharField(max_length=200,blank = True,null = True)
+    address = models.TextField()
     email = models.EmailField(max_length=254,blank = True,null = True)
     lrno = models.CharField(max_length = 254,blank = True,null = True,verbose_name = 'LR No.')
     vehicleno = models.CharField(max_length = 254,blank = True,null = True,verbose_name = 'Vehicle No.')
@@ -109,14 +109,14 @@ class SaleBillDetails(models.Model):
     
     eway = models.CharField(max_length=50, blank=True, null=True)    
     veh = models.CharField(max_length=50, blank=True, null=True)
-    destination = models.CharField(max_length=50, blank=True, null=True)
+    destination = models.TextField()
     po = models.CharField(max_length=50, blank=True, null=True)
     
     cgst = models.CharField(max_length=50, blank=True, null=True)
     sgst = models.CharField(max_length=50, blank=True, null=True)
     igst = models.CharField(max_length=50, blank=True, null=True)
     cess = models.CharField(max_length=50, blank=True, null=True)
-    tcs = models.CharField(max_length=50, blank=True, null=True)
+    tcs = models.BooleanField(default = False)
     total = models.CharField(max_length=50, blank=True, null=True)
 
     def __str__(self):

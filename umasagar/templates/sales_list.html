@@ -46,7 +46,7 @@
             <tr>
                 <td class="align-middle"> <h3>{{ sale.billno }}</h3> </td>
                 <td class=""> {{ sale.name }} <br> <small style="color: #909494">Ph No : {{ sale.phone }}</small> </td>
-                <td class="align-middle">{% for item in sale.get_items_list %} {{ item.product.variety_code }} <br> {% endfor %}</td>
+                <td class="align-middle">{% for item in sale.get_items_list %} {{ item.product.variety_code }} - {{item.product.uom}} <br> {% endfor %}</td>
                 <td class="align-middle">{% for item in sale.get_items_list %} {{ item.quantity }} <br> {% endfor %}</td>     
                 <td class="align-middle">{{ sale.get_total_price }}</td>
                 <td class="align-middle">{{ sale.time.date }}</td>
@@ -55,6 +55,7 @@
                 {% else %}
                 <td class="align-middle"> <a href="{% url 'umasagar:b1-approve' sale.pk %}" class="btn ghost-pink">Approve Bill</a> <span>#</span></td>
                 {% endif %}
+                
             </tr>
             {% endfor %}
         </tbody>
@@ -71,7 +72,7 @@
             <tr>
                 <td class="align-middle"> <h3>{{ sale.billno }}</h3> </td>
                 <td class=""> {{ sale.name }} <br> <small style="color: #909494">Ph No : {{ sale.phone }}</small> </td>
-                <td class="align-middle">{% for item in sale.get_items_list %} {{ item.product.variety_code }} <br> {% endfor %}</td>
+                <td class="align-middle">{% for item in sale.get_items_list %} {{ item.product.variety_code }} - {{item.product.uom}} <br> {% endfor %}</td>
                 <td class="align-middle">{% for item in sale.get_items_list %} {{ item.quantity }} <br> {% endfor %}</td>     
                 <td class="align-middle">{{ sale.get_total_price }}</td>
                 <td class="align-middle">{{ sale.time.date }}</td>
@@ -98,14 +99,17 @@
             <tr>
                 <td class="align-middle"> <h3>{{ sale.billno }}</h3> </td>
                 <td class=""> {{ sale.name }} <br> <small style="color: #909494">Ph No : {{ sale.phone }}</small> </td>
-                <td class="align-middle">{% for item in sale.get_items_list %} {{ item.product.variety_code }} <br> {% endfor %}</td>
+                <td class="align-middle">{% for item in sale.get_items_list %} {{ item.product.variety_code }} - {{item.product.uom}} <br> {% endfor %}</td>
                 <td class="align-middle">{% for item in sale.get_items_list %} {{ item.quantity }} <br> {% endfor %}</td>     
                 <td class="align-middle">{{ sale.get_total_price }}</td>
                 <td class="align-middle">{{ sale.time.date }}</td>
                 {% if sale.logapprove %}
-                <td><b style="color:green">Approved</b></td>
+                <td><b style="color:green">Approved</b>===><a class = "btn btn-info" href="{% url 'umasagar:sale-bill' sale.billno %}">Invoice</a></td>
                 {% else %}
                 <td class="align-middle"> <a href="{% url 'umasagar:log-approve' sale.pk %}" class="btn ghost-pink">Approve Bill</a> <span>#</span></td>
+
+                
+
                 {% endif %}
             </tr>
             {% endif %}
@@ -120,7 +124,7 @@
             <tr>
                 <td class="align-middle"> <h3>{{ sale.billno }}</h3> </td>
                 <td class=""> {{ sale.name }} <br> <small style="color: #909494">Ph No : {{ sale.phone }}</small> </td>
-                <td class="align-middle">{% for item in sale.get_items_list %} {{ item.product.variety_code }} <br> {% endfor %}</td>
+                <td class="align-middle">{% for item in sale.get_items_list %} {{ item.product.variety_code }} - {{item.product.uom}} <br> {% endfor %}</td>
                 <td class="align-middle">{% for item in sale.get_items_list %} {{ item.quantity }} <br> {% endfor %}</td>     
                 <td class="align-middle">{{ sale.get_total_price }}</td>
                 <td class="align-middle">{{ sale.time.date }}</td>

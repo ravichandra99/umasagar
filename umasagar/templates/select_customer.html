@@ -8,13 +8,11 @@
 
 
 
-{% if request.user.usertype.usertype == 'user' %}
+{% if request.user.usertype.usertype == 'salesrep' %}
 
-<span>No Permissions</span>
 
-{% else %}
 
-    <div style="color:#402657; font-style: bold; font-size: 2rem; border-bottom: 1px solid white;">New Sale</div> 
+    <div style="color:#402657; font-style: bold; font-size: 1.5rem; border-bottom: 1px solid white;">New Sale</div> 
     
     <br>
     
@@ -53,6 +51,14 @@
         </div>
         
     </form>
+
+
+
+{% else %}
+
+
+<span>No Permissions</span>
+
 
 {% endif %}
 
