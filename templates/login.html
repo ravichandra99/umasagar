@@ -11,6 +11,7 @@
   <form method="post">
     {% csrf_token %}
     {{ form|crispy }}
+    <br>
     <button class="btn btn-outline-success" type="submit">Login</button>
   </form>
 
