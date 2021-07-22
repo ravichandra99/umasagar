@@ -233,13 +233,17 @@ class SaleView(LoginRequiredMixin,ListView):
         # Call the base implementation first to get a context
         context = super(SaleView, self).get_context_data(*args, **kwargs)
         # add whatever to your context:
+        try:
         
-        if self.request.user.usertype.usertype == 'user':
-            print(self.request.user)
-            context = {'bills': SaleBill.objects.filter(dealer = self.request.user)}
-        elif self.request.user.usertype.usertype == 'logistics':
-            print(self.request.user)
-            context = {'bills': SaleBill.objects.all(),'bill':SaleBillDetails.objects.all()}
+            if self.request.user.usertype.usertype == 'user':
+                print(self.request.user)
+                context = {'bills': SaleBill.objects.filter(dealer = self.request.user)}
+            elif self.request.user.usertype.usertype == 'logistics':
+                print(self.request.user)
+                context = {'bills': SaleBill.objects.all(),'bill':SaleBillDetails.objects.all()}
+
+        except:
+            context = {'bills' : None }
 
         return context
 
