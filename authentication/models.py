@@ -10,43 +10,43 @@ from django.contrib.auth.validators import UnicodeUsernameValidator
 
 
 class Zone(models.Model):
-	zone = models.CharField(max_length = 100)
+	zone = models.CharField(max_length = 100,unique = True)
 
 	def __str__(self):
 		return self.zone
 
 class State(models.Model):
-	state = models.CharField(max_length = 100)
+	state = models.CharField(max_length = 100,unique = True)
 
 	def __str__(self):
 		return self.state
 
 class Region(models.Model):
-	region = models.CharField(max_length = 100)
+	region = models.CharField(max_length = 100,unique = True)
 
 	def __str__(self):
 		return self.region
 
 class Divison(models.Model):
-	divison = models.CharField(max_length = 100)
+	divison = models.CharField(max_length = 100,unique = True)
 
 	def __str__(self):
 		return self.divison
 
 class District(models.Model):
-	district = models.CharField(max_length = 100)
+	district = models.CharField(max_length = 100,unique = True)
 
 	def __str__(self):
 		return self.district
 
 class Mandal(models.Model):
-	mandal = models.CharField(max_length = 100)
+	mandal = models.CharField(max_length = 100,unique = True)
 
 	def __str__(self):
 		return self.mandal
 
 class Village(models.Model):
-	village = models.CharField(max_length = 100)
+	village = models.CharField(max_length = 100,unique = True)
 
 	def __str__(self):
 		return self.village
@@ -64,13 +64,15 @@ class Dependent(models.Model):
 		abstract = True
 
 class UserType(models.Model):
-	usertype = models.CharField(max_length = 100)
+	usertype = models.CharField(max_length = 100,unique = True)
 
 	def __str__(self):
 		return self.usertype
 
 class Company(models.Model):
 	company = models.CharField(max_length = 100)
+	works_on = models.CharField(max_length = 100)
+	address = models.TextField()
 
 	def __str__(self):
 		return self.company

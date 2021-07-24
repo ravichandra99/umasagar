@@ -7,11 +7,11 @@ from django.views.generic import (
     UpdateView,
     DeleteView
 )
-
+from django.forms.models import inlineformset_factory
 from umasagar.models import Product,SaleBillDetails,SaleBill,SaleItem
 from authentication.models import MyUser
 from umasagar.forms import SaleItemFormset,SelectDealerForm,SaleForm,\
-Boss1ApproveForm,Boss2ApproveForm,LogApproveForm
+Boss1ApproveForm,Boss2ApproveForm,LogApproveForm,SaleItemForm
 from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib import messages
@@ -71,6 +71,8 @@ class PurchaseCreateView(LoginRequiredMixin,View):
             # saves bill
             billobj = form.save(commit=False)
             billobj.dealer = supplierobj
+            billobj.user = request.user
+            billobj.address = request.user.address
             billobj.save()     
             # create bill details object
             billdetailsobj = SaleBillDetails(billno=billobj)
@@ -189,7 +191,6 @@ class LogApproveView(LoginRequiredMixin,View):
             salebill.lrno = lrno
             salebill.vehicleno = vehicleno
             salebill.logapprove = result
-            salebill
 
             salebill.save()
 
@@ -199,11 +200,13 @@ class LogApproveView(LoginRequiredMixin,View):
 
             total_amount = [round(i.totalprice ,2) for i in itembill]
             total = round(sum(total_amount),2)
+            billdetails.destination = salebill.dealer.address
 
             billdetails.total = total
             billdetails.igst = datetime.today()
             billdetails.veh = salebill.vehicleno
             billdetails.po = salebill.lrno
+            billdetails.user = request.user
             billdetails.tcs = True
             billdetails.save()
 #             if settings.USE_EMAIL and result:
@@ -236,11 +239,13 @@ class SaleView(LoginRequiredMixin,ListView):
         try:
         
             if self.request.user.usertype.usertype == 'user':
-                print(self.request.user)
                 context = {'bills': SaleBill.objects.filter(dealer = self.request.user)}
             elif self.request.user.usertype.usertype == 'logistics':
-                print(self.request.user)
                 context = {'bills': SaleBill.objects.all(),'bill':SaleBillDetails.objects.all()}
+            elif self.request.user.usertype.usertype == 'salesrep':
+                context = {'bills': SaleBill.objects.filter(user = self.request.user)}
+            else:
+                pass
 
         except:
             context = {'bills' : None }
@@ -275,6 +280,49 @@ class SaleBillView(View):
             'billdetails'   : billdetails,
         }
         return render(request, self.template_name, context)
+
+
+def edit_sale(request ,name, billno):
+
+
+    salebill = SaleBill.objects.get(billno = billno)
+    no = SaleItem.objects.filter(billno=billno).count()
+    SaleItemFormSet = inlineformset_factory(SaleBill, SaleItem, form=SaleItemForm, fields=('quantity', 'perprice', 'product'),extra = no//2 - 1 if no//2 > 1 else 0)
+
+    formset = SaleItemFormSet(instance=salebill)
+
+
+    if request.method == 'POST':  
+        formset = SaleItemFormSet(request.POST, instance=salebill)
+        if formset.is_valid():
+            for form in formset:
+                if form.is_valid():
+                    billitem = form.save(commit=False)                                       # links the bill object to the items
+                    
+                    # calculates the total price
+                    billitem.totalprice = billitem.perprice * billitem.quantity
+                   
+                    # saves bill item
+                    try:
+                        billitem.save()
+                    except:
+                        messages.info(request, 'Select any Product')
+                        return redirect('umasagar:sales-list')
+
+                    #form.save()
+
+            messages.success(request, 'The Sale Bill {} is Updated.'.format(salebill.billno))
+            return redirect('umasagar:sales-list')
+
+    else:
+        supplierobj = get_object_or_404(MyUser, pk=name)
+        formset = SaleItemFormSet(instance=salebill)
+
+    return render(request,'edit_sale.html',{'supplier':supplierobj, 'formset':formset})
+
+    
+
+
 
 
 

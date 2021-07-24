@@ -58,7 +58,7 @@ class ProductAdmin(ModelAdmin):
     menu_icon = 'pilcrow'  # change as required
     list_display = ('variety_code','price')
     list_filter = ('variety_code',)
-    search_fields = ('variety_code',)
+    search_fields = ('variety_code__variety_code',)
 
 class ProductGroup(ModelAdminGroup):
     menu_label = 'Products'

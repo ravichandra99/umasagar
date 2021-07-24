@@ -1,8 +1,16 @@
 from django.db import models
 from authentication.models import MyUser,Company
 import uuid
-
+from umasagar.validators import validate_pk
+from datetime import datetime
 # Create your models here.
+
+class TimeStamp(models.Model):
+    time = models.DateTimeField(auto_now_add = True)
+    user = models.ForeignKey(MyUser,on_delete = models.CASCADE)
+
+    class Meta:
+        abstract = True
 
 class CropGroup(models.Model):
 	crop_group = models.CharField(max_length = 100)
@@ -33,7 +41,7 @@ class Stage(models.Model):
 		return self.stage
 
 class VarietyCode(models.Model):
-	variety_code = models.CharField(max_length = 100,unique = True,primary_key = True)
+	variety_code = models.CharField(max_length = 100,unique = True,primary_key = True,validators=[validate_pk])
 
 	def __str__(self):
 		return self.variety_code
@@ -60,13 +68,13 @@ class Product(models.Model):
 
 
 
-class SaleBill(models.Model):
+class SaleBill(TimeStamp):
     billno = models.AutoField(primary_key=True)
     time = models.DateTimeField(auto_now=True)
     dealer = models.ForeignKey(MyUser, on_delete = models.SET_NULL, related_name='saledealer',null = True,verbose_name = 'select user')
     name = models.CharField(max_length=150,blank = True,null = True)
     phone = models.CharField(max_length=13,blank = True,null = True)
-    address = models.TextField()
+    address = models.TextField(blank = True,null = True)
     email = models.EmailField(max_length=254,blank = True,null = True)
     lrno = models.CharField(max_length = 254,blank = True,null = True,verbose_name = 'LR No.')
     vehicleno = models.CharField(max_length = 254,blank = True,null = True,verbose_name = 'Vehicle No.')
@@ -104,12 +112,13 @@ class SaleItem(models.Model):
 
 
 
-class SaleBillDetails(models.Model):
+class SaleBillDetails(TimeStamp):
+    user = models.ForeignKey(MyUser,on_delete = models.CASCADE,blank = True,null=True)
     billno = models.ForeignKey(SaleBill, on_delete = models.CASCADE, related_name='saledetailsbillno')
     
     eway = models.CharField(max_length=50, blank=True, null=True)    
     veh = models.CharField(max_length=50, blank=True, null=True)
-    destination = models.TextField()
+    destination = models.TextField(blank=True, null=True)
     po = models.CharField(max_length=50, blank=True, null=True)
     
     cgst = models.CharField(max_length=50, blank=True, null=True)

@@ -1,6 +1,6 @@
 from django.urls import path
 from umasagar.views import index,SelectSupplierView,PurchaseCreateView,Boss1ApproveView,\
-Boss2ApproveView,SaleView,LogApproveView,getprice,SaleBillView
+Boss2ApproveView,SaleView,LogApproveView,getprice,SaleBillView,edit_sale
 
 app_name = 'umasagar'
 
@@ -15,6 +15,8 @@ urlpatterns = [
     path('logapprove/<int:pk>',LogApproveView.as_view(),name = 'log-approve'),
     path('getprice/',getprice,name = 'getprice'),
     path('sales/<billno>', SaleBillView.as_view(), name="sale-bill"),
+    path('saleupdate/<name>/<billno>', edit_sale, name="edit-sale"),
+
 
     
 ]
