@@ -186,6 +186,7 @@ class LogApproveView(LoginRequiredMixin,View):
             approve = request.POST.get("logapprove")
             lrno = request.POST.get("lrno")
             vehicleno = request.POST.get("vehicleno")
+            transporter = request.POST.get("transporter")
             result = True if approve == 'on' else False
             salebill = get_object_or_404(SaleBill, pk = kwargs['pk'])
             salebill.lrno = lrno
@@ -207,6 +208,7 @@ class LogApproveView(LoginRequiredMixin,View):
             billdetails.veh = salebill.vehicleno
             billdetails.po = salebill.lrno
             billdetails.user = request.user
+            billdetails.transporter = transporter
             billdetails.tcs = True
             billdetails.save()
 #             if settings.USE_EMAIL and result:

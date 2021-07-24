@@ -120,7 +120,7 @@ class SaleBillDetails(TimeStamp):
     veh = models.CharField(max_length=50, blank=True, null=True)
     destination = models.TextField(blank=True, null=True)
     po = models.CharField(max_length=50, blank=True, null=True)
-    
+    transporter = models.CharField(max_length=50, default = 'First Last')
     cgst = models.CharField(max_length=50, blank=True, null=True)
     sgst = models.CharField(max_length=50, blank=True, null=True)
     igst = models.CharField(max_length=50, blank=True, null=True)

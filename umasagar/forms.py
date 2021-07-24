@@ -70,6 +70,6 @@ class LogApproveForm(forms.ModelForm):
 
     class Meta:
         model = SaleBill
-        fields = ['lrno','vehicleno','logapprove',]
+        fields = ['lrno','vehicleno','transporter','logapprove',]
 
 
