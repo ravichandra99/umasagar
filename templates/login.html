@@ -1,19 +1,57 @@
-{% extends 'base.html' %}
-{% load crispy_forms_tags %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Login </title>
+  <link href="https://fonts.googleapis.com/css?family=Karla:400,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.materialdesignicons.com/4.8.95/css/materialdesignicons.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="{% static 'login/css/login.css' %}">
 
-{% block title %}Login{% endblock %}
-
-{% block content %}
-<div class="mt-5">
-  <h2>Login</h2>
-
- 
-  <form method="post">
-    {% csrf_token %}
-    {{ form|crispy }}
-    <br>
-    <button class="btn btn-outline-success" type="submit">Login</button>
-  </form>
-
- </div>
-{% endblock %}
+  <script src="https://kit.fontawesome.com/05c146b6c7.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  <main>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-6 login-section-wrapper">
+          <div class="brand-wrapper">
+            <img src="{% static 'img/aircraft.svg' %}" alt="logo" class="logo">
+          </div>
+          <div class="login-wrapper my-auto">
+            <h1 class="login-title">Log in</h1>
+            <form method="POST" autocomplete="off">
+              {% csrf_token %}
+              <div class="form-group">
+                {% if form.errors %}
+                    <p class="label label-danger">
+                        Your username and password didn't match. 
+                        Please try again.
+                    </p>
+                {% endif %}
+                <label for="email">Username</label>
+                <input type="text" name="username" id="id_username" autofocus="" autocapitalize="none" maxlength="150" class="form-control" placeholder="John Doe">
+              </div>
+              <div class="form-group mb-4">
+                <label for="password">Password</label>
+                <input type="password" name="password" id="id_password" class="form-control" placeholder="Password Here">
+              </div>
+              <input name="login" id="login" class="btn btn-block login-btn" type="submit" value="Login">
+            </form>
+            <a href="{% url 'umasagar:index' %}" class="forgot-password-link">Go Back?</a>
+            <i class="fas fa-chevron-circle-left"></i>
+          </div>
+        </div>
+        <div class="col-sm-6 px-0 d-none d-sm-block">
+          <img src="{% static 'login/images/login.jpg' %}" alt="login image" class="login-img">
+        </div>
+      </div>
+    </div>
+  </main>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+</body>

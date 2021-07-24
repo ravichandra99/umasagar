@@ -67,9 +67,11 @@ class Boss2ApproveForm(forms.ModelForm):
         fields = ['s2approve',]
 
 class LogApproveForm(forms.ModelForm):
+    transporter = forms.CharField()
+    logapprove = forms.BooleanField()
 
     class Meta:
         model = SaleBill
-        fields = ['lrno','vehicleno','transporter','logapprove',]
+        fields = ['lrno','vehicleno']
 
 
