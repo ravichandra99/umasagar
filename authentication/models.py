@@ -27,11 +27,11 @@ class Region(models.Model):
 	def __str__(self):
 		return self.region
 
-class Divison(models.Model):
-	divison = models.CharField(max_length = 100,unique = True)
+class Division(models.Model):
+	division = models.CharField(max_length = 100,unique = True)
 
 	def __str__(self):
-		return self.divison
+		return self.division
 
 class District(models.Model):
 	district = models.CharField(max_length = 100,unique = True)
@@ -55,7 +55,7 @@ class Dependent(models.Model):
 	zone = models.ForeignKey(Zone, on_delete = models.CASCADE,blank = True,null = True)
 	state = models.ForeignKey(State, on_delete = models.CASCADE, blank = True,null = True)
 	region = models.ForeignKey(Region, on_delete = models.CASCADE, blank = True,null = True)
-	divison = models.ForeignKey(Divison, on_delete = models.CASCADE, blank = True,null = True)
+	divison = models.ForeignKey(Division, on_delete = models.CASCADE, blank = True,null = True)
 	district = models.ForeignKey(District, on_delete = models.CASCADE, blank = True,null = True)
 	mandal = models.ForeignKey(Mandal, on_delete = models.CASCADE, blank = True,null = True)
 	village = models.ForeignKey(Village, on_delete = models.CASCADE, blank = True,null = True)

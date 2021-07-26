@@ -3,7 +3,7 @@ from django.contrib import admin
 # Register your models here.
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.admin import UserAdmin
-from authentication.models import MyUser,UserType,Company
+from authentication.models import MyUser,UserType,Company,Zone,State,Region,Division,District,Mandal,Village
 
 class MyUserAdmin(UserAdmin):
     add_form = UserCreationForm
