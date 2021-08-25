@@ -2,12 +2,12 @@
 {% load static %}
 
 
-{% block title %} Sale Bill No : {{ bill.billno }}{% endblock title %}
+{% block title %} Order No :{{bill.order}} {% endblock title %}
 
 
 {% block content %}
     
-    <div style="color:black; font-style: bold; font-size: 1.5rem;  border-bottom: 1px solid white;">Sale Bill No : {{ bill.billno }}</div>
+    <div style="color:black; font-style: bold; font-size: 1rem;  border-bottom: 1px solid white;">Sale Bill No : {{ bill.billno }} </div>
 
     <br><br>
 
@@ -80,6 +80,7 @@
                                         <td class="inner-box" style="width: 30%; font-weight: bold; text-align: center;">DESCRIPTION OF THE GOODS</td>
                                         <td class="inner-box" style="width: 12%; font-weight: bold; text-align: center;">&nbsp;CROP CODE</td>
                                         <td class="inner-box" style="width: 12%; font-weight: bold; text-align: center;">QTY MTS</td>
+                                        <td class="inner-box" style="width: 12%; font-weight: bold; text-align: center;">QTY DES</td>
                                         <td class="inner-box" style="width: 12%; font-weight: bold; text-align: center;">RATE PMT</td>
                                         <td class="inner-box" style="width: 12%; font-weight: bold; text-align: center;">AMOUNT INRS</td>
                                         
@@ -90,8 +91,9 @@
                                             <td class="inner-box" style="width: 30%;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;{{ item.product }} - {{item.product.uom}} - {{item.product.stage}}</td>
                                             <td class="inner-box" style="width: 12%;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{item.product.crop_code}}</td>
                                             <td class="inner-box" style="width: 12%;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ item.quantity }}</td>
+                                            <td class="inner-box" style="width: 12%;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ item.remaining }}</td>
                                             <td class="inner-box" style="width: 12%;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;{{ item.perprice }}</td>
-                                            <td class="inner-box" style="width: 12%;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ item.totalprice }}</td>
+                                            <td class="inner-box" style="width: 12%;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ item.totalprice|floatformat:"2" }}</td>
                                             
                                         </tr>
                                     {% endfor %}

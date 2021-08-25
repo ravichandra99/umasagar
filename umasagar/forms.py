@@ -67,11 +67,33 @@ class Boss2ApproveForm(forms.ModelForm):
         fields = ['s2approve',]
 
 class LogApproveForm(forms.ModelForm):
-    transporter = forms.CharField()
-    logapprove = forms.BooleanField()
+    transporter = forms.CharField(required = False)
+    logapprove = forms.BooleanField(required = False)
 
     class Meta:
         model = SaleBill
         fields = ['lrno','vehicleno']
+
+# form used to render a single stock item form
+class dSaleItemForm(forms.ModelForm):
+    #product = forms.CharField(widget = forms.TextInput)
+    
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['product'].queryset = Product.objects.all()
+        self.fields['product'].widget.attrs.update({'class': 'textinput form-control setprice stock', 'required': 'true'})
+        self.fields['quantity'].widget.attrs.update({'class': 'textinput form-control setprice quantity', 'min': '0', 'required': 'true','readonly' :'true'})
+        self.fields['despatched'].widget.attrs.update({'class': 'textinput form-control setprice despatch', 'min': '0', 'required': 'true','readonly' :'true'})
+        self.fields['remaining'].widget.attrs.update({'class': 'textinput form-control setprice remaining', 'min': '0', 'required': 'true'})
+        self.fields['perprice'].widget.attrs.update({'class': 'textinput form-control setprice price', 'min': '0', 'required': 'true','readonly' :'true'})
+
+        
+
+    class Meta:
+        model = SaleItem
+        fields = ['quantity','despatched','remaining', 'perprice', 'product']
+
+
 
 

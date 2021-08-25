@@ -3,6 +3,8 @@ from authentication.models import MyUser,Company
 import uuid
 from umasagar.validators import validate_pk
 from datetime import datetime
+import uuid
+from django.db.models import Sum
 # Create your models here.
 
 class TimeStamp(models.Model):
@@ -70,6 +72,7 @@ class Product(models.Model):
 
 class SaleBill(TimeStamp):
     billno = models.AutoField(primary_key=True)
+    order = models.UUIDField(default=uuid.uuid4, editable=False)
     time = models.DateTimeField(auto_now=True)
     dealer = models.ForeignKey(MyUser, on_delete = models.SET_NULL, related_name='saledealer',null = True,verbose_name = 'select user')
     name = models.CharField(max_length=150,blank = True,null = True)
@@ -104,11 +107,13 @@ class SaleItem(models.Model):
     billno = models.ForeignKey(SaleBill, on_delete = models.CASCADE, related_name='salebillno')
     product = models.ForeignKey(Product, on_delete = models.CASCADE)
     quantity = models.IntegerField(default=1)
+    despatched = models.IntegerField(default = 0)
+    remaining = models.IntegerField(default=0)
     perprice = models.FloatField(default=1)
     totalprice = models.FloatField(default=1)
 
     def __str__(self):
-	    return "Bill no: " + str(self.billno.billno) + ", Item = " + str(self.product.variety_code)
+        return "Bill no: " + str(self.billno.billno) + ", Item = " + str(self.product.variety_code)
 
 
 

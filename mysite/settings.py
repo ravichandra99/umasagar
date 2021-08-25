@@ -189,7 +189,9 @@ DEFAULT_FROM_EMAIL = 'fin9er5hooter@gmail.com'
 EMAIL_HOST_USER = 'fin9er5hooter@gmail.com'
 EMAIL_HOST_PASSWORD = 'Qwer@1234'
 EMAIL_USE_TLS = True
-USE_EMAIL = True
+
+
+USE_EMAIL = False
 
 db_from_env = dj_database_url.config(conn_max_age=500)
 DATABASES['default'].update(db_from_env)
