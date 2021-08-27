@@ -86,6 +86,7 @@ class PurchaseCreateView(LoginRequiredMixin,View):
                 billitem.billno = billobj                                       # links the bill object to the items
                     
                 # calculates the total price
+                billitem.despatched = billitem.quantity
                 billitem.totalprice = billitem.perprice * billitem.quantity
                    
                 # saves bill item
@@ -310,15 +311,27 @@ class SaleView(LoginRequiredMixin,ListView):
         context = super(SaleView, self).get_context_data(*args, **kwargs)
         # add whatever to your context:
         try:
-        
+            
             if self.request.user.usertype.usertype == 'user':
-                context = {'bills': SaleBill.objects.filter(dealer = self.request.user)}
+                self.template_name = 'user_list.html'
+                orders_list = list(dict.fromkeys([i.order for i in SaleBill.objects.filter(dealer = self.request.user)]))
+                context = {'bills': [SaleBill.objects.filter(order = i) for i in orders_list],'bill':SaleBillDetails.objects.filter(billno__dealer = self.request.user)}
             elif self.request.user.usertype.usertype == 'logistics':
                 self.template_name = 'despatch_list.html'
-                orders_list = list(dict.fromkeys([i.order for i in SaleBill.objects.all()]))
+                orders_list = list(dict.fromkeys([i.order for i in SaleBill.objects.filter(s2approve = True)]))
                 context = {'bills': [SaleBill.objects.filter(order = i) for i in orders_list],'bill':SaleBillDetails.objects.all()}
             elif self.request.user.usertype.usertype == 'salesrep':
-                context = {'bills': SaleBill.objects.filter(user = self.request.user)}
+                self.template_name = 'salesrep_list.html'
+                orders_list = list(dict.fromkeys([i.order for i in SaleBill.objects.filter(user = self.request.user)]))
+                context = {'bills': [SaleBill.objects.filter(order = i) for i in orders_list],'bill':SaleBillDetails.objects.filter(user = self.request.user)}
+            elif self.request.user.usertype.usertype == 'b1':
+                self.template_name = 'b1_list.html'
+                orders_list = list(dict.fromkeys([i.order for i in SaleBill.objects.all()]))
+                context = {'bills': [SaleBill.objects.filter(order = i) for i in orders_list],'bill':SaleBillDetails.objects.all()}
+            elif self.request.user.usertype.usertype == 'b2':
+                self.template_name = 'b2_list.html'
+                orders_list = list(dict.fromkeys([i.order for i in SaleBill.objects.filter(s1approve = True)]))
+                context = {'bills': [SaleBill.objects.filter(order = i) for i in orders_list],'bill':SaleBillDetails.objects.all()}
             else:
                 pass
 

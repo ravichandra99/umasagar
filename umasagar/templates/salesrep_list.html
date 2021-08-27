@@ -29,7 +29,6 @@
                 
                 <th width="15%">Order Date</th>
                 <th width="25%">Invoices/Despatch</th>
-                
 
             </tr>
         </thead>
@@ -40,7 +39,6 @@
 
 <tbody>
             {% for sale in bills %}
-
 
             
             <tr>
@@ -53,8 +51,10 @@
                 <td class="align-middle">{% for item in sale.first.get_items_list %} {{ item.perprice }} <br> {% endfor %}</td>    
                 
                 <td class="align-middle">{{ sale.first.time.date }}</td>
-               <td class="align-middle"> {% if sale.first.get_items_list.first.despatched != 0 %}<a href="{% url 'umasagar:log-approve' sale.first.pk %}" class="btn ghost-pink">Despatch</a>{% endif %} <span>{% for i in sale %} {% if not forloop.counter0 == 0 %}<a href="{% url 'umasagar:sale-bill' i.billno %}">INVOICE{{ i.billno }}</a>, {% endif %}{% endfor %}</span></td>
-
+               <td class="align-middle"> <span>{% for i in sale %} {% if not forloop.counter0 == 0 %}<a href="{% url 'umasagar:sale-bill' i.billno %}">INVOICE{{ i.billno }}</a>, {% endif %} {{forloop.count}} {% endfor %}</span>
+               
+                </td>
+               
                 
             </tr>
 

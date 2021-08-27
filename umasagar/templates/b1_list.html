@@ -26,10 +26,10 @@
                 <th width="10%">Despatched</th>
                 <th width="10%">Remaining</th>
                 <th width="10%">Price Per Unit</th>
-                
+             
                 <th width="15%">Order Date</th>
                 <th width="25%">Invoices/Despatch</th>
-                
+                <th width="25%">My Status</th>
 
             </tr>
         </thead>
@@ -41,7 +41,7 @@
 <tbody>
             {% for sale in bills %}
 
-
+            
             
             <tr>
                 <td class="align-middle"> <span>{{ sale.first.order }}</span> </td>
@@ -53,7 +53,14 @@
                 <td class="align-middle">{% for item in sale.first.get_items_list %} {{ item.perprice }} <br> {% endfor %}</td>    
                 
                 <td class="align-middle">{{ sale.first.time.date }}</td>
-               <td class="align-middle"> {% if sale.first.get_items_list.first.despatched != 0 %}<a href="{% url 'umasagar:log-approve' sale.first.pk %}" class="btn ghost-pink">Despatch</a>{% endif %} <span>{% for i in sale %} {% if not forloop.counter0 == 0 %}<a href="{% url 'umasagar:sale-bill' i.billno %}">INVOICE{{ i.billno }}</a>, {% endif %}{% endfor %}</span></td>
+               <td class="align-middle"> <span>{% for i in sale %} {% if not forloop.counter0 == 0 %}<a href="{% url 'umasagar:sale-bill' i.billno %}">INVOICE{{ i.billno }}</a>, {% endif %}  {% endfor %}</span>
+               {% if sale.first.s1approve %}
+                <td><b style="color:green">Approved</b></td>
+                {% else %}
+                <td class="align-middle"> <a href="{% url 'umasagar:b1-approve' sale.first.pk %}" class="btn btn-info">Approve Bill</a> 
+                <br><a class = "btn btn-outline-info" href="{% url 'umasagar:edit-sale' sale.first.name sale.first.billno %}">Update</a></td>
+               {% endif %}
+               </td>
 
                 
             </tr>

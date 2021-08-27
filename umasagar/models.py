@@ -100,6 +100,9 @@ class SaleBill(TimeStamp):
             total += item.totalprice
         return total
 
+    def getcount(self):
+        pass
+
 
 
 #contains the sale stocks made

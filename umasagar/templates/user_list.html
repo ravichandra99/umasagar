@@ -26,10 +26,9 @@
                 <th width="10%">Despatched</th>
                 <th width="10%">Remaining</th>
                 <th width="10%">Price Per Unit</th>
-                
+                <th width="10%">Others</th>
                 <th width="15%">Order Date</th>
                 <th width="25%">Invoices/Despatch</th>
-                
 
             </tr>
         </thead>
@@ -51,9 +50,9 @@
                 <td class="align-middle">{% for item in sale.first.get_items_list %} {{ item.remaining }} <br> {% endfor %}</td>
                 <td class="align-middle">{% for item in sale.first.get_items_list %} {{ item.despatched }} <br> {% endfor %}</td>
                 <td class="align-middle">{% for item in sale.first.get_items_list %} {{ item.perprice }} <br> {% endfor %}</td>    
-                
+                <td class="align-middle"> - </td>
                 <td class="align-middle">{{ sale.first.time.date }}</td>
-               <td class="align-middle"> {% if sale.first.get_items_list.first.despatched != 0 %}<a href="{% url 'umasagar:log-approve' sale.first.pk %}" class="btn ghost-pink">Despatch</a>{% endif %} <span>{% for i in sale %} {% if not forloop.counter0 == 0 %}<a href="{% url 'umasagar:sale-bill' i.billno %}">INVOICE{{ i.billno }}</a>, {% endif %}{% endfor %}</span></td>
+               <td class="align-middle"> {% if sale.first.get_items_list.first.despatched != 0 %}Not Yet Complete{% endif %} <span>{% for i in sale %} {% if not forloop.counter0 == 0 %}<a href="{% url 'umasagar:sale-bill' i.billno %}">INVOICE{{ i.billno }}</a>, {% endif %}{% endfor %}</span></td>
 
                 
             </tr>
