@@ -106,11 +106,12 @@
                                 <label class="panel-body-text">Total Price:</label>    
                                 <input type="text" class="textinput form-control totalprice" value="0" disabled required>
                             </div>
-                            <!-- <div class="form-group col-md-1">
-                                <label class="panel-body-text" style="color: #000"></label>
-                                <button class="form-control btn btn-danger remove-form-row">- Delete</button>
-                            </div> -->
+                            <div class="form-group col-md-2">
+                                <input type="hidden" name="{{forloop.counter0}}-despatched" value="{{form.initial.despatched}}" class="textinput form-control setprice remain" min="0" required="true" readonly="true" id="id_{{forloop.counter0}}-despatched">
+                            </div>
+
                         </div> 
+                        
 
                             
 
@@ -125,7 +126,18 @@
                 </div>
     
 
-            <br>{{form|crispy}}<br>
+            <br><div class="logform">
+
+            <div id="div_id_lrno" class="form-group"> <label for="id_lrno" class="">
+                LR No.
+            </label> <div class=""> <input type="text" name="lrno" maxlength="254" class="textinput textInput form-control" id="id_lrno" required> </div> </div> <div id="div_id_vehicleno" class="form-group"> <label for="id_vehicleno" class="">
+                Vehicle No.
+            </label> <div class=""> <input type="text" name="vehicleno" maxlength="254" class="textinput textInput form-control" id="id_vehicleno" required> </div> </div> <div id="div_id_transporter" class="form-group"> <label for="id_transporter" class="">
+                Transporter
+            </label> <div class=""> <input type="text" name="transporter" class="textinput textInput form-control" id="id_transporter" required> </div> </div> <div class="form-group"> <div id="div_id_logapprove" class="form-check"> <input type="checkbox" name="logapprove" class="checkboxinput form-check-input" id="id_logapprove" required> <label for="id_logapprove" class="form-check-label">
+                    Approve
+                </label> </div> </div>
+</div><br>
 
             <div class="align-middle">
                 <button type="submit" class="btn ghost-green">Update Sales</button>
@@ -156,11 +168,19 @@ No Permissions
                                     var quantity = element.parents('.form-row').find('.quantity').val();
                                     var despatch = element.parents('.form-row').find('.remaining').val();
                                     var perprice = element.parents('.form-row').find('.price').val();
-                                    console.log(quantity,element.val())
-                                    // var despatched = Number(quantity) - element.val();
+                                    var remaining = element.parents('.form-row').find('.remain').val();
+                                    
+                                    var despatched = Number(remaining) - Number(element.val());
+
                                     var tprice = despatch * perprice;
-                                    // element.parents('.form-row').find('.despatch').val(despatched);
+                                    element.parents('.form-row').find('.despatch').val(despatched);
                                     element.parents('.form-row').find('.totalprice').val(tprice);
+                                    if (element.val() > Number(remaining)) {
+                                        alert('Order Value is greater than existing stock')
+                                        $(this).val(0);
+                                        element.parents('.form-row').find('.despatch').val(remaining);
+                                        element.parents('.form-row').find('.totalprice').val(0);
+                                    }
 
 
                                 });

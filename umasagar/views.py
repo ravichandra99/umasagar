@@ -276,7 +276,7 @@ class LogApproveView(LoginRequiredMixin,View):
 
             billdetails.total = total
             print(billdetails.total,'...total')
-            billdetails.igst = datetime.today()
+            billdetails.igst = datetime.today().date()
             billdetails.veh = nsalebill.vehicleno
             billdetails.po = nsalebill.lrno
             billdetails.user = request.user
@@ -395,6 +395,7 @@ def edit_sale(request ,name, billno):
                     billitem = form.save(commit=False)                                       # links the bill object to the items
                     
                     # calculates the total price
+                    billitem.despatched = billitem.quantity
                     billitem.totalprice = billitem.perprice * billitem.quantity
                    
                     # saves bill item
